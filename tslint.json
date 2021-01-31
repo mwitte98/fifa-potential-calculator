@@ -39,7 +39,7 @@
     "comment-type": [true, "singleline", "multiline", "doc", "directive"],
     "completed-docs": false,
     "curly": true,
-    "cyclomatic-complexity": [true, 7],
+    "cyclomatic-complexity": [true, 8],
     "deprecation": true,
     "encoding": true,
     "eofline": true,

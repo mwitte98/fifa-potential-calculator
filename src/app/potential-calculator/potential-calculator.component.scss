@@ -1,0 +1,65 @@
+.section {
+  padding: 16px;
+}
+
+.player-row {
+  display: flex;
+  border: 1px #ccc solid;
+  margin: 1px;
+  padding: 0 8px;
+}
+
+.drag-handle {
+  align-self: center;
+  color: #ccc;
+  padding-right: 8px;
+  cursor: move;
+}
+
+.form-container {
+  align-self: center;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.section.cdk-drop-list-dragging .player-row:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.mat-form-field {
+  padding-right: 16px;
+}
+
+.icon-wrapper {
+  display: inline-block;
+  vertical-align: middle;
+  padding-right: 16px;
+}
+
+.mat-icon:hover {
+  cursor: pointer;
+}
+
+.results {
+  display: inline-block;
+}
+
+.mat-h3 {
+  margin: 0;
+}
+
+.calculated-position {
+  display: inline-block;
+  padding-right: 16px;
+  vertical-align: top;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+}
