@@ -1,6 +1,7 @@
 import { FormGroup } from '@angular/forms';
 
 export interface PlayerForm {
+  name: string;
   positions: string[];
   age: string;
   overall: string;

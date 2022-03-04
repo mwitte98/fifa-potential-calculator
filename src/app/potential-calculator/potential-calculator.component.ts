@@ -29,7 +29,8 @@ export class PotentialCalculatorComponent implements OnInit {
     { name: 'Youth Academy', playerCount: 16, displayDetails: false, forms: [] },
     { name: 'Scout 1', playerCount: 16, displayDetails: true, forms: [] },
     { name: 'Scout 2', playerCount: 16, displayDetails: true, forms: [] },
-    { name: 'Scout 3', playerCount: 16, displayDetails: true, forms: [] }
+    { name: 'Scout 3', playerCount: 16, displayDetails: true, forms: [] },
+    { name: 'Team', playerCount: 52, displayDetails: false, forms: [] }
   ];
   public sections: Section[] = [];
 
@@ -55,10 +56,11 @@ export class PotentialCalculatorComponent implements OnInit {
 
   createForm(formValue: PlayerForm): FormGroup {
     const form = this.fb.group({
+      name: [formValue?.name || null],
       positions: [formValue?.positions || []],
       age: [formValue?.age || null],
       overall: [formValue?.overall || null],
-      value: [formValue?.value || '10000'],
+      value: [formValue?.value || null],
       calculatedPositions: [formValue?.calculatedPositions || []]
     });
     form.valueChanges.subscribe((player: PlayerForm) => {
@@ -130,10 +132,11 @@ export class PotentialCalculatorComponent implements OnInit {
 
   clearForm(form: FormGroup): void {
     form.patchValue({
+      name: null,
       positions: [],
       age: null,
       overall: null,
-      value: '10000',
+      value: null,
       calculatedPositions: []
     });
   }
@@ -174,6 +177,7 @@ export class PotentialCalculatorComponent implements OnInit {
 
   calculatePotentials(player: PlayerForm, position: string, overall: number): number[] {
     const positionFactor = POSITIONS.find((pos: Position) => pos.abbr === position)?.factor || 0;
+    const playerValue = this.convertPlayerValue(player.value);
     const baseValue = this.findFactor(OVERALL_FACTORS, overall) * CURRENCY_USD;
     const positionMod = (positionFactor * baseValue) / 100;
     const ageMod = (this.findFactor(AGE_FACTORS, this.offsetAge(position, Number(player.age))) * baseValue) / 100;
@@ -185,11 +189,29 @@ export class PotentialCalculatorComponent implements OnInit {
       const summedValue = baseValue + positionMod + potentialMod + ageMod;
       const roundedValue = this.roundValue(summedValue);
 
-      if (roundedValue === Number(player.value)) {
+      if (roundedValue === playerValue) {
         potentials.push(potential);
       }
     }
     return potentials;
+  }
+
+  convertPlayerValue(inputValue: string): number {
+    if (inputValue == null || inputValue.length === 0) {
+      return 0;
+    }
+    if (!isNaN(Number(inputValue))) {
+      return Number(inputValue);
+    }
+    const lastCharacter = inputValue[inputValue.length - 1];
+    const numericalCharacters = Number(inputValue.substring(0, inputValue.length - 1));
+    if (lastCharacter === 'M') {
+      return numericalCharacters * 1_000_000;
+    }
+    if (lastCharacter === 'K') {
+      return numericalCharacters * 1_000;
+    }
+    return 0;
   }
 
   offsetAge(positionAbbr: string, age: number): number {
@@ -199,7 +221,7 @@ export class PotentialCalculatorComponent implements OnInit {
         updatedAge = 36;
       } else if (age >= 37) {
         updatedAge = 35;
-      } else {
+      } else if (age >= 28) {
         updatedAge = age - 2;
       }
     }

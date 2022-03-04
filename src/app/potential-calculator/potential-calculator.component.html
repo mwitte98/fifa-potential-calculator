@@ -1,5 +1,5 @@
-<div class="section" cdkDropList (cdkDropListDropped)="drop($event, section)" *ngFor="let section of sections; trackBy: trackBySection">
-  <div class="mat-h2">{{ section.name }}</div>
+<div cdkDropList (cdkDropListDropped)="drop($event, section)" *ngFor="let section of sections; trackBy: trackBySection">
+  <div class="section-header mat-h2">{{ section.name }}</div>
   <div cdkDrag class="player-row" *ngFor="let form of section.forms; trackBy: trackByForm">
     <div class="drag-handle" cdkDragHandle>
       <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
@@ -11,6 +11,10 @@
     </div>
     <form class="form-container" [formGroup]="form">
       <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" autocomplete="off" />
+      </mat-form-field>
+      <mat-form-field>
         <mat-label>Position</mat-label>
         <mat-select multiple formControlName="positions">
           <mat-option [value]="position.abbr" *ngFor="let position of POSITIONS; trackBy: trackByPosition">
@@ -20,19 +24,19 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Age</mat-label>
-        <input matInput formControlName="age" />
+        <input matInput formControlName="age" autocomplete="off" />
       </mat-form-field>
       <mat-form-field>
         <mat-label>Overall</mat-label>
-        <input matInput formControlName="overall" />
+        <input matInput formControlName="overall" autocomplete="off" />
       </mat-form-field>
       <mat-form-field>
         <mat-label>Player Value</mat-label>
         <input
           matInput
           formControlName="value"
-          onselect="this.setSelectionRange(0, this.value.length - 3)"
-          onclick="this.setSelectionRange(0, this.value.length - 3)"
+          autocomplete="off"
+          oninput="let start = this.selectionStart; this.value = this.value.toUpperCase(); this.setSelectionRange(start, start);"
         />
       </mat-form-field>
       <div class="icon-wrapper"><mat-icon (click)="clearForm(form)">clear</mat-icon></div>
