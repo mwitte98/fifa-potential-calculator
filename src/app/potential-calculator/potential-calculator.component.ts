@@ -24,15 +24,15 @@ import {
   styleUrls: ['./potential-calculator.component.scss']
 })
 export class PotentialCalculatorComponent implements OnInit {
-  public POSITIONS = POSITIONS;
-  public defaultSections: Section[] = [
+  POSITIONS = POSITIONS;
+  defaultSections: Section[] = [
     { name: 'Youth Academy', playerCount: 16, displayDetails: false, forms: [] },
     { name: 'Scout 1', playerCount: 16, displayDetails: true, forms: [] },
     { name: 'Scout 2', playerCount: 16, displayDetails: true, forms: [] },
     { name: 'Scout 3', playerCount: 16, displayDetails: true, forms: [] },
     { name: 'Team', playerCount: 52, displayDetails: false, forms: [] }
   ];
-  public sections: Section[] = [];
+  sections: Section[] = [];
 
   constructor(private fb: FormBuilder) {}
 
@@ -83,7 +83,7 @@ export class PotentialCalculatorComponent implements OnInit {
         name: defaultSection.name,
         playerCount: defaultSection.playerCount,
         displayDetails: defaultSection.displayDetails,
-        formValues: parsedSection?.formValues || []
+        formValues: parsedSection?.formValues ?? []
       };
     });
   }
@@ -176,7 +176,7 @@ export class PotentialCalculatorComponent implements OnInit {
   }
 
   calculatePotentials(player: PlayerForm, position: string, overall: number): number[] {
-    const positionFactor = POSITIONS.find((pos: Position) => pos.abbr === position)?.factor || 0;
+    const positionFactor = POSITIONS.find((pos: Position) => pos.abbr === position)?.factor ?? 0;
     const playerValue = this.convertPlayerValue(player.value);
     const baseValue = this.findFactor(OVERALL_FACTORS, overall) * CURRENCY_USD;
     const positionMod = (positionFactor * baseValue) / 100;
@@ -200,16 +200,16 @@ export class PotentialCalculatorComponent implements OnInit {
     if (inputValue == null || inputValue.length === 0) {
       return 0;
     }
-    if (!isNaN(Number(inputValue))) {
+    if (!Number.isNaN(Number(inputValue))) {
       return Number(inputValue);
     }
     const lastCharacter = inputValue[inputValue.length - 1];
-    const numericalCharacters = Number(inputValue.substring(0, inputValue.length - 1));
+    const numericalCharacters = Number(inputValue.slice(0, -1));
     if (lastCharacter === 'M') {
       return numericalCharacters * 1_000_000;
     }
     if (lastCharacter === 'K') {
-      return numericalCharacters * 1_000;
+      return numericalCharacters * 1000;
     }
     return 0;
   }
@@ -243,18 +243,18 @@ export class PotentialCalculatorComponent implements OnInit {
     let divisor = 0;
     if (value <= 5000) {
       divisor = 50;
-    } else if (value <= 10000) {
+    } else if (value <= 10_000) {
       divisor = 1000;
-    } else if (value <= 50000) {
+    } else if (value <= 50_000) {
       divisor = 5000;
-    } else if (value <= 250000) {
-      divisor = 10000;
-    } else if (value <= 1000000) {
-      divisor = 25000;
-    } else if (value <= 5000000) {
-      divisor = 100000;
+    } else if (value <= 250_000) {
+      divisor = 10_000;
+    } else if (value <= 1_000_000) {
+      divisor = 25_000;
+    } else if (value <= 5_000_000) {
+      divisor = 100_000;
     } else {
-      divisor = 500000;
+      divisor = 500_000;
     }
     return divisor;
   }

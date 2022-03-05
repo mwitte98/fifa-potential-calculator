@@ -19,9 +19,9 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
-    "module": "es2020",
-    "lib": ["es2018", "dom"]
+    "target": "es2021",
+    "module": "es2022",
+    "lib": ["es2021", "dom"]
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

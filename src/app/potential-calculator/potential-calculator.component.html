@@ -4,8 +4,7 @@
     <div class="drag-handle" cdkDragHandle>
       <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
         <path
-          d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"
-        ></path>
+          d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
         <path d="M0 0h24v24H0z" fill="none"></path>
       </svg>
     </div>
@@ -36,8 +35,7 @@
           matInput
           formControlName="value"
           autocomplete="off"
-          oninput="let start = this.selectionStart; this.value = this.value.toUpperCase(); this.setSelectionRange(start, start);"
-        />
+          oninput="let start = this.selectionStart; this.value = this.value.toUpperCase(); this.setSelectionRange(start, start);" />
       </mat-form-field>
       <div class="icon-wrapper"><mat-icon (click)="clearForm(form)">clear</mat-icon></div>
       <div *ngIf="!section.displayDetails && form.value.calculatedPositions.length > 0" class="results mat-h3">
@@ -47,19 +45,16 @@
     <div *ngIf="section.displayDetails" class="results">
       <div
         class="calculated-position mat-h3"
-        *ngFor="let calculatedPosition of form.value.calculatedPositions; trackBy: trackByCalculatedPosition"
-      >
+        *ngFor="let calculatedPosition of form.value.calculatedPositions; trackBy: trackByCalculatedPosition">
         <div
           [ngClass]="calculatedPosition.strikethrough ? 'strikethrough' : ''"
-          (click)="toggleStrikethrough(calculatedPosition)"
-        >
+          (click)="toggleStrikethrough(calculatedPosition)">
           {{ calculatedPosition.position }}
         </div>
         <div
           [ngClass]="calculatedPosition.strikethrough || calculation.strikethrough ? 'strikethrough' : ''"
           (click)="toggleStrikethrough(calculation)"
-          *ngFor="let calculation of calculatedPosition.calculations; trackBy: trackByCalculation"
-        >
+          *ngFor="let calculation of calculatedPosition.calculations; trackBy: trackByCalculation">
           {{ calculation.overall }} ({{ getPotential(calculation) }})
         </div>
       </div>

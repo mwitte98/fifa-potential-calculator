@@ -10,7 +10,7 @@ import { PotentialCalculatorComponent } from './potential-calculator/potential-c
 
 @NgModule({
   declarations: [AppComponent, PotentialCalculatorComponent],
-  imports: [BrowserAnimationsModule, BrowserModule, ReactiveFormsModule, MaterialModule, AppRoutingModule],
+  imports: [AppRoutingModule, BrowserAnimationsModule, BrowserModule, MaterialModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent]
 })
