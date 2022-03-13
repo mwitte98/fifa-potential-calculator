@@ -26,11 +26,11 @@ import {
 export class PotentialCalculatorComponent implements OnInit {
   POSITIONS = POSITIONS;
   defaultSections: Section[] = [
-    { name: 'Youth Academy', playerCount: 16, displayDetails: false, forms: [] },
-    { name: 'Scout 1', playerCount: 16, displayDetails: true, forms: [] },
-    { name: 'Scout 2', playerCount: 16, displayDetails: true, forms: [] },
-    { name: 'Scout 3', playerCount: 16, displayDetails: true, forms: [] },
-    { name: 'Team', playerCount: 52, displayDetails: false, forms: [] }
+    { name: 'Youth Academy', playerCount: 16, multiplePositions: false, forms: [] },
+    { name: 'Scout 1', playerCount: 16, multiplePositions: true, forms: [] },
+    { name: 'Scout 2', playerCount: 16, multiplePositions: true, forms: [] },
+    { name: 'Scout 3', playerCount: 16, multiplePositions: true, forms: [] },
+    { name: 'Team', playerCount: 52, multiplePositions: false, forms: [] }
   ];
   sections: Section[] = [];
 
@@ -42,7 +42,7 @@ export class PotentialCalculatorComponent implements OnInit {
       const section: Section = {
         name: savedSection.name,
         playerCount: savedSection.playerCount,
-        displayDetails: savedSection.displayDetails,
+        multiplePositions: savedSection.multiplePositions,
         forms: []
       };
       for (let i = 0; i < savedSection.playerCount; i++) {
@@ -56,12 +56,13 @@ export class PotentialCalculatorComponent implements OnInit {
 
   createForm(formValue: PlayerForm): FormGroup {
     const form = this.fb.group({
-      name: [formValue?.name || null],
-      positions: [formValue?.positions || []],
-      age: [formValue?.age || null],
-      overall: [formValue?.overall || null],
-      value: [formValue?.value || null],
-      calculatedPositions: [formValue?.calculatedPositions || []]
+      name: [formValue?.name ?? null],
+      position: [formValue?.position ?? null],
+      positions: [formValue?.positions ?? null],
+      age: [formValue?.age ?? null],
+      overall: [formValue?.overall ?? null],
+      value: [formValue?.value ?? null],
+      calculatedPositions: [formValue?.calculatedPositions ?? []]
     });
     form.valueChanges.subscribe((player: PlayerForm) => {
       this.calculatePotential(player);
@@ -82,7 +83,7 @@ export class PotentialCalculatorComponent implements OnInit {
       return {
         name: defaultSection.name,
         playerCount: defaultSection.playerCount,
-        displayDetails: defaultSection.displayDetails,
+        multiplePositions: defaultSection.multiplePositions,
         formValues: parsedSection?.formValues ?? []
       };
     });
@@ -93,7 +94,7 @@ export class PotentialCalculatorComponent implements OnInit {
       return {
         name: section.name,
         playerCount: section.playerCount,
-        displayDetails: section.displayDetails,
+        multiplePositions: section.multiplePositions,
         formValues: section.forms.map((form: FormGroup) => form.value)
       };
     });
@@ -133,7 +134,8 @@ export class PotentialCalculatorComponent implements OnInit {
   clearForm(form: FormGroup): void {
     form.patchValue({
       name: null,
-      positions: [],
+      position: null,
+      positions: null,
       age: null,
       overall: null,
       value: null,
@@ -155,8 +157,9 @@ export class PotentialCalculatorComponent implements OnInit {
     const minOverall = Number(overalls[0]);
     const maxOverall =
       overalls.length > 1 && Number(overalls[1]) > Number(overalls[0]) ? Number(overalls[1]) : Number(overalls[0]);
+    const positions = player.position ? [player.position] : player.positions ?? [];
 
-    for (const position of player.positions) {
+    for (const position of positions) {
       const calculatedPosition: CalculatedPosition = { position, calculations: [], strikethrough: false };
       for (let overall = minOverall; overall <= maxOverall; overall++) {
         const potentials = this.calculatePotentials(player, position, overall);

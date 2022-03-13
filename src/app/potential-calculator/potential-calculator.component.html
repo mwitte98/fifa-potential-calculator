@@ -13,8 +13,16 @@
         <mat-label>Name</mat-label>
         <input matInput formControlName="name" autocomplete="off" />
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field *ngIf="!section.multiplePositions">
         <mat-label>Position</mat-label>
+        <mat-select formControlName="position">
+          <mat-option [value]="position.abbr" *ngFor="let position of POSITIONS; trackBy: trackByPosition">
+            {{ position.abbr }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="section.multiplePositions">
+        <mat-label>Positions</mat-label>
         <mat-select multiple formControlName="positions">
           <mat-option [value]="position.abbr" *ngFor="let position of POSITIONS; trackBy: trackByPosition">
             {{ position.abbr }}
@@ -38,11 +46,11 @@
           oninput="let start = this.selectionStart; this.value = this.value.toUpperCase(); this.setSelectionRange(start, start);" />
       </mat-form-field>
       <div class="icon-wrapper"><mat-icon (click)="clearForm(form)">clear</mat-icon></div>
-      <div *ngIf="!section.displayDetails && form.value.calculatedPositions.length > 0" class="results mat-h3">
+      <div *ngIf="!section.multiplePositions && form.value.calculatedPositions.length > 0" class="results mat-h3">
         Pot: {{ getPotential(form.value.calculatedPositions[0].calculations[0]) }}
       </div>
     </form>
-    <div *ngIf="section.displayDetails" class="results">
+    <div *ngIf="section.multiplePositions" class="results">
       <div
         class="calculated-position mat-h3"
         *ngFor="let calculatedPosition of form.value.calculatedPositions; trackBy: trackByCalculatedPosition">

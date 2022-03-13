@@ -2,7 +2,8 @@ import { FormGroup } from '@angular/forms';
 
 export interface PlayerForm {
   name: string;
-  positions: string[];
+  position?: string;
+  positions?: string[];
   age: string;
   overall: string;
   value: string;
@@ -23,14 +24,14 @@ export interface Position {
 export interface Section {
   name: string;
   playerCount: number;
-  displayDetails: boolean;
+  multiplePositions: boolean;
   forms: FormGroup[];
 }
 
 export interface SavedSection {
   name: string;
   playerCount: number;
-  displayDetails: boolean;
+  multiplePositions: boolean;
   formValues: PlayerForm[];
 }
 
